@@ -14,6 +14,8 @@ import {
 } from "@expo-google-fonts/oswald";
 import { useFonts as useLato, Lato_400Regular } from "@expo-google-fonts/lato";
 
+import { RestaurantsContextProvider } from "./src/services/restaurants/restaurants.context";
+
 const Tab = createBottomTabNavigator();
 
 const Settings = () => <Text>Settings</Text>;
@@ -32,48 +34,54 @@ export default function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <NavigationContainer>
-          <Tab.Navigator
-            initialRouteName="Restaurants"
-            screenOptions={{
-              tabBarActiveTintColor: "#e91e63",
-            }}
-          >
-            <Tab.Screen
-              name="Restaurants"
-              component={RestaurantsScreen}
-              options={{
-                tabBarIcon: ({ color, size }) => (
-                  <Ionicons
-                    name="restaurant-outline"
-                    size={size}
-                    color={color}
-                  />
-                ),
+        <RestaurantsContextProvider>
+          <NavigationContainer>
+            <Tab.Navigator
+              initialRouteName="Restaurants"
+              screenOptions={{
+                tabBarActiveTintColor: "#e91e63",
               }}
-            />
-            <Tab.Screen
-              name="Settings"
-              component={Settings}
-              options={{
-                tabBarIcon: ({ color, size }) => (
-                  <Ionicons name="settings-outline" size={size} color={color} />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Maps"
-              component={Maps}
-              options={{
-                tabBarIcon: ({ color, size }) => (
-                  <Feather name="map" size={size} color={color} />
-                ),
-              }}
-            />
-          </Tab.Navigator>
-        </NavigationContainer>
-        {/* <ExpoStatusBar style="auto" /> */}
+            >
+              <Tab.Screen
+                name="Restaurants"
+                component={RestaurantsScreen}
+                options={{
+                  tabBarIcon: ({ color, size }) => (
+                    <Ionicons
+                      name="restaurant-outline"
+                      size={size}
+                      color={color}
+                    />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="Settings"
+                component={Settings}
+                options={{
+                  tabBarIcon: ({ color, size }) => (
+                    <Ionicons
+                      name="settings-outline"
+                      size={size}
+                      color={color}
+                    />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="Maps"
+                component={Maps}
+                options={{
+                  tabBarIcon: ({ color, size }) => (
+                    <Feather name="map" size={size} color={color} />
+                  ),
+                }}
+              />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </RestaurantsContextProvider>
       </ThemeProvider>
+      <ExpoStatusBar style="auto" />
     </>
   );
 }
