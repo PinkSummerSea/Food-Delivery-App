@@ -1,5 +1,11 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { StatusBar, SafeAreaView, FlatList, Pressable } from "react-native";
+import {
+  StatusBar,
+  SafeAreaView,
+  FlatList,
+  Pressable,
+  Text,
+} from "react-native";
 import { useState, useContext } from "react";
 import { Searchbar, ActivityIndicator, Colors } from "react-native-paper";
 import { RestaurantInfoCard } from "../components/restaurant-info-card.component";
@@ -7,6 +13,8 @@ import styled from "styled-components/native";
 import { RestaurantsContext } from "../../../services/restaurants/restaurants.context";
 import { Spacer } from "../../../components/spacer/spacer.component";
 import { Search } from "../components/search.component";
+import { FavouritesContext } from "../../../services/favourites/favourites.context";
+import { FavouritesBar } from "../../../components/favourites/favourites-bar.component";
 
 const SafeArea = styled(SafeAreaView)`
   flex: 1;
@@ -23,13 +31,25 @@ const RestaurantList = styled(FlatList).attrs({
   },
 })``;
 
-export const RestaurantsScreen = ({navigation}) => {
+export const RestaurantsScreen = ({ navigation }) => {
   const { restaurants, isLoading } = useContext(RestaurantsContext);
+  const { favourites } = useContext(FavouritesContext);
+  const [isFavouriteToggled, setIsFavouriteToggled] = useState(false);
+  //console.log(favourites)
   //console.log(restaurants);
   //console.log(navigation)
   return (
     <SafeArea>
-      <Search />
+      <Search
+        onFavouriteToggle={() => setIsFavouriteToggled(!isFavouriteToggled)}
+        isFavouriteToggled={isFavouriteToggled}
+      />
+      {isFavouriteToggled && (
+        <FavouritesBar
+          favourites={favourites}
+          onNavigate={navigation.navigate}
+        />
+      )}
       {isLoading ? (
         <>
           <Spacer position="top" size="large" />
@@ -42,10 +62,14 @@ export const RestaurantsScreen = ({navigation}) => {
           data={restaurants}
           renderItem={({ item }) => {
             return (
-              <Pressable onPress={() =>  navigation.navigate("Restaurant Detail", {
-                restaurant: item,
-              })}>
-                 <RestaurantInfoCard restaurant={item} />
+              <Pressable
+                onPress={() =>
+                  navigation.navigate("Restaurant Detail", {
+                    restaurant: item,
+                  })
+                }
+              >
+                <RestaurantInfoCard restaurant={item} />
               </Pressable>
             );
           }}
