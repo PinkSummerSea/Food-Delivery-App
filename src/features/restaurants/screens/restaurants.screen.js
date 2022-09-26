@@ -1,11 +1,12 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { StatusBar, SafeAreaView, FlatList } from "react-native";
+import { StatusBar, SafeAreaView, FlatList, Pressable } from "react-native";
 import { useState, useContext } from "react";
 import { Searchbar, ActivityIndicator, Colors } from "react-native-paper";
 import { RestaurantInfoCard } from "../components/restaurant-info-card.component";
 import styled from "styled-components/native";
 import { RestaurantsContext } from "../../../services/restaurants/restaurants.context";
 import { Spacer } from "../../../components/spacer/spacer.component";
+import { Search } from "../components/search.component";
 
 const SafeArea = styled(SafeAreaView)`
   flex: 1;
@@ -22,20 +23,13 @@ const RestaurantList = styled(FlatList).attrs({
   },
 })``;
 
-export const RestaurantsScreen = () => {
-  const { restaurants, isLoading, error } = useContext(RestaurantsContext);
-  console.log(restaurants);
-  const [searchQuery, setSearchQuery] = useState("");
-  const onChangeSearch = (query) => setSearchQuery(query);
+export const RestaurantsScreen = ({navigation}) => {
+  const { restaurants, isLoading } = useContext(RestaurantsContext);
+  //console.log(restaurants);
+  //console.log(navigation)
   return (
     <SafeArea>
-      <SearchContainer>
-        <Searchbar
-          placeholder="Search"
-          onChangeText={onChangeSearch}
-          value={searchQuery}
-        />
-      </SearchContainer>
+      <Search />
       {isLoading ? (
         <>
           <Spacer position="top" size="large" />
@@ -47,8 +41,13 @@ export const RestaurantsScreen = () => {
         <RestaurantList
           data={restaurants}
           renderItem={({ item }) => {
-            console.log(item);
-            return <RestaurantInfoCard restaurant={item} />;
+            return (
+              <Pressable onPress={() =>  navigation.navigate("Restaurant Detail", {
+                restaurant: item,
+              })}>
+                 <RestaurantInfoCard restaurant={item} />
+              </Pressable>
+            );
           }}
           keyExtractor={(item) => item.name}
         />
