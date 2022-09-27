@@ -1,26 +1,15 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { useContext } from "react";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { Text, Button, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { RestaurantsNavigator } from "./restaurants.navigator";
 import { MapScreen } from "../../features/map/screens/map.screen";
-import { AuthenticationContext } from "../../services/authentication/authentication.context";
+
 import { RestaurantsContextProvider } from "../../services/restaurants/restaurants.context";
 import { LocationContextProvider } from "../../services/location/location.context";
 import { FavouritesContextProvider } from "../../services/favourites/favourites.context";
+import { SettingsNavigator } from "./settings.navigator";
 
 const Tab = createBottomTabNavigator();
-
-const Settings = () => {
-  const { onLogout } = useContext(AuthenticationContext);
-  return (
-    <View>
-      <Text>Settings</Text>
-      <Button title="logout" onPress={() => onLogout()} />
-    </View>
-  );
-};
 
 export const AppNavigator = () => {
   return (
@@ -48,7 +37,7 @@ export const AppNavigator = () => {
             />
             <Tab.Screen
               name="Settings"
-              component={Settings}
+              component={SettingsNavigator}
               options={{
                 tabBarIcon: ({ color, size }) => (
                   <Ionicons name="settings-outline" size={size} color={color} />
