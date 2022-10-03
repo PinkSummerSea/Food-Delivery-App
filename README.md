@@ -2,7 +2,11 @@
 
 React Native mobile app built with Expo, React Native Paper, React Context API and Firebase.
 
-Features include: restaurants list screen, restaurant detail screen, search locations, favourite restaurants, take pictures using phone camera.
+Features include: restaurants list screen, restaurant detail screen, user authentication, interactive map, location search, restaurants collection, phone camera access.
+
+# Tech Stack
+
+React Native, Expo, Firebase, React Context API
 
 # Screenshots
 
